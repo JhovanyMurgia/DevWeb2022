@@ -61,7 +61,7 @@ function jogadorDaVez() {
 function criaPeca(cor) {
 	let imagem = document.createElement("img");
 	imagem.classList.add("peca");
-	imagem.setAttribute("src", `img/${cor}.png`);
+	imagem.setAttribute("src", `${cor}.png`);
 	imagem.setAttribute("width", `${tamanhoCelula - 4}px`);
 	imagem.setAttribute("height", `${tamanhoCelula - 4}px`);
 	imagem.setAttribute("draggable", "false");
