@@ -81,8 +81,6 @@ function drop(ev) {
 	const imgid = ev.dataTransfer.getData("imgid");
 	const imagem = document.querySelector(`#${imgid}`);
 	imagem.parentElement.addEventListener("dragover", allowDrop);
-
-	/*Calculo distancia*/
 	const [linhaImagem, colunaImagem] = imagem.classList[1]
 		.split("a")[1]
 		.split("-");
@@ -123,7 +121,7 @@ function drop(ev) {
 	} else {
 		moveDama(+linhaImagem, +colunaImagem, ev, imagem, jogadorDaVez, distanciaLinha, distanciaColuna);
 	}
-	//console.log(imagem)
+	
 }
 
 function movePeca(ev, imagem, jogadorDaVez) {
@@ -133,14 +131,7 @@ function movePeca(ev, imagem, jogadorDaVez) {
 	jogadorDaVez();
 }
 
-function comePecaOposta(
-	linhaImagem,
-	colunaImagem,
-	tipoImagemOposta,
-	ev,
-	imagem,
-	jogadorDaVez
-) {
+function comePecaOposta(linhaImagem, colunaImagem, tipoImagemOposta, ev, imagem, jogadorDaVez) {
 	const [linhaAlvo, colunaAlvo] = ev.srcElement.className
 		.split("a")[1]
 		.split("-");
@@ -203,61 +194,3 @@ function comePecaOposta(
 	}
 }
 
-function moveDama(linhaImagem, colunaImagem, ev, imagem, jogadorDaVez, distanciaLinha, distanciaColuna) {
-	// console.log(distanciaColuna, distanciaLinha);
-	if ((distanciaColuna === 1 || distanciaColuna === -1) && (distanciaLinha === 1 || distanciaLinha -1)) {
-		movePeca(ev, imagem, jogadorDaVez);
-	} else {
-		let count = 0;
-		let linhaAlvo, colunaAlvo, acrescentadorLinha, acrescentadorColuna, espacoJogoComido;
-		let [linhaFinal, colunaFinal] = ev.srcElement.className.split("a")[1].split("-");
-		if(distanciaLinha * -1 === distanciaColuna && distanciaColuna >= 1) {
-			//pra cima direita
-			acrescentadorLinha = -1;
-			acrescentadorColuna = 1;
-			linhaAlvo = linhaImagem + acrescentadorLinha;
-			colunaAlvo = colunaImagem + acrescentadorColuna;
-		} else if  (distanciaLinha * 1 === distanciaColuna && distanciaColuna >= 1) {
-			//pra baixo direita
-			acrescentadorLinha = 1;
-			acrescentadorColuna = 1;
-			linhaAlvo = linhaImagem + acrescentadorLinha;
-			colunaAlvo = colunaImagem + acrescentadorColuna;
-		} else if (distanciaLinha * -1 === distanciaColuna && distanciaColuna <= -1) {
-			//pra baixo esquerda
-			acrescentadorLinha = 1;
-			acrescentadorColuna = -1;
-			linhaAlvo = linhaImagem + acrescentadorLinha;
-			colunaAlvo = colunaImagem + acrescentadorColuna;
-		} else if (distanciaLinha * 1 === distanciaColuna && distanciaColuna <= -1) {
-			//pra cima esquerda
-			acrescentadorLinha = -1;
-			acrescentadorColuna = -1;
-			linhaAlvo = linhaImagem + acrescentadorLinha;
-			colunaAlvo = colunaImagem + acrescentadorColuna;
-		}
-		while ((linhaAlvo != +linhaFinal && colunaAlvo != +colunaFinal) && count <= 2 ) {
-			const espacoJogo = document.querySelector(".a" + linhaAlvo + "-" + colunaAlvo);
-			if (espacoJogo != null && espacoJogo.childNodes[0] != undefined) {
-				espacoJogoComido = espacoJogo;
-				count++;
-			}
-			linhaAlvo += acrescentadorLinha;
-			colunaAlvo += acrescentadorColuna;
-		}
-		if (count === 0) {
-	
-			movePeca(ev, imagem, jogadorDaVez);
-		} else if (count === 1 && imagem.id[0] === "r") {
-			espacoJogoComido.childNodes[0].remove();
-			espacoJogoComido.addEventListener("dragover", allowDrop);
-	
-			movePeca(ev, imagem, jogadorDaVez);
-		} else if (count === 1 && imagem.id[0] === "b") {
-			espacoJogoComido.childNodes[0].remove();
-			espacoJogoComido.addEventListener("dragover", allowDrop);
-	
-			movePeca(ev, imagem, jogadorDaVez);		}
-	}
-
-}
